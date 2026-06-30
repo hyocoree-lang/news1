@@ -91,7 +91,7 @@ html,body{height:100%;font-family:var(--f);background:#e8e8ee;color:var(--ept);}
 .av-up{width:55px;height:55px;border-radius:50%;border:2px dashed #c0c0cc;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;flex-shrink:0;}
 .av-up img{width:100%;height:100%;object-fit:cover;display:none;pointer-events:none;}
 .av-up input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:2;}
-.di{background:#f4f4fb;border:2px solid #d4d4e8;border-radius:10px;padding:13px 14px;margin-bottom:10px;}
+.di{background:#f4f4fb;border:2px solid #d4d4e8;border-radius:10px;padding:13px 14px;margin-bottom:10px;}.di-stat{background:#eef6f0;border:2px solid #b8d8c4;}.di-prog{background:#f4f4fb;border:2px solid #d4d4e8;}
 .di-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
 .di-lbl{font-size:13px;color:#4a9068;font-weight:700;}
 .di-rm{background:none;border:none;color:#c07070;cursor:pointer;font-size:18px;padding:0 2px;opacity:.7;}
@@ -373,12 +373,12 @@ return {drawQRToCanvas:drawQRToCanvas};
     </div>
     <div class="tab-bar">
       <button class="tab active" onclick="showTab('t-hdr',this)">머리말</button>
-      <button class="tab" onclick="showTab('t-gr',this)">센터장인사말</button>
+      <button class="tab" onclick="showTab('t-gr',this)">센터장 인사말</button>
       <button class="tab" onclick="showTab('t-rc',this)">지난달 프로그램 안내</button>
       <button class="tab" onclick="showTab('t-nx',this)">다음달 프로그램 안내</button>
       <button class="tab" onclick="showTab('t-st',this)">선배 취업수기</button>
       <button class="tab" onclick="showTab('t-em',this)">주요 채용공고 안내</button>
-      <button class="tab" onclick="showTab('t-sec',this)">위치변경</button>
+      <button class="tab" onclick="showTab('t-sec',this)">메뉴 위치변경</button>
       <button class="tab" onclick="showTab('t-ai',this)">모의면접 부스이용현황</button>
       <button class="tab" onclick="showTab('t-ft',this)" style="grid-column:span 2;border-right:none;">꼬리말</button>
     </div>
@@ -416,9 +416,14 @@ return {drawQRToCanvas:drawQRToCanvas};
         </div>
         <div id="hdr-color-wrap">
           <div class="fg"><div class="sw-grid" id="swatches"></div></div>
-          <div class="fg"><label>직접 입력 (CSS gradient/color)</label><input id="hdr-cv" placeholder="선택 시 자동 적용" oninput="u()"></div>
-          <div class="fg"><label>포인트 컬러 오버라이드</label><input id="pt-color" placeholder="자동 적용" oninput="u()"></div>
-          <div class="fg"><label>딥 포인트 컬러 오버라이드</label><input id="dp-color" placeholder="자동 적용" oninput="u()"></div>
+          <div class="fg" style="margin-bottom:8px;">
+            <label style="font-size:12px;color:#9090b0;margin-bottom:5px;">직접 입력 / 포인트 컬러 / 딥 포인트 컬러</label>
+            <div style="display:flex;gap:5px;">
+              <input id="hdr-cv" placeholder="gradient/color" oninput="u()" style="flex:2;font-size:12px;padding:7px 8px;">
+              <input id="pt-color" placeholder="포인트 컬러" oninput="u()" style="flex:1;font-size:12px;padding:7px 8px;">
+              <input id="dp-color" placeholder="딥 포인트 컬러" oninput="u()" style="flex:1;font-size:12px;padding:7px 8px;">
+            </div>
+          </div>
         </div>
         <div id="hdr-img-wrap" style="display:none;">
           <div class="ph-up"><input type="file" id="hdr-if" accept="image/*" onchange="loadHdrImg(this)"><span>배경 이미지 업로드</span></div>
@@ -444,31 +449,27 @@ return {drawQRToCanvas:drawQRToCanvas};
         <div class="fg"><label>인사말 제목</label><input id="g-t" value="제목을 입력하세요" oninput="u()"></div>
         <div class="fg"><label>본문</label><textarea id="g-b" oninput="u()" style="min-height:90px;">내용을 입력하세요</textarea></div>
         <div class="fg"><label>서명</label><input id="g-sig" value="— 대학일자리플러스센터/학생진로처장 송현정 드림" oninput="u()"></div>
-        <div class="st">사진 &amp; 링크 (선택)</div>
-        <div class="fg"><label>센터장 사진 (선택)</label><div class="ph-up"><input type="file" id="gr-if" accept="image/*" onchange="loadGrImg(this)"><img id="gr-ip" class="ppr" style="height:60px;"><span>사진 업로드 — 인사말 옆에 원형으로 표시</span></div></div>
+        <div class="st">링크 (선택)</div>
         <!-- 링크 URL·문구 한 줄 -->
         <div style="display:grid;grid-template-columns:2fr 1fr;gap:6px;margin-bottom:10px;">
           <div class="fg" style="margin:0;"><label>링크 URL</label><input id="g-lk" value="" placeholder="https://..." oninput="u()"></div>
           <div class="fg" style="margin:0;"><label>링크 문구</label><input id="g-ll" value="자세히 보기" placeholder="자세히 보기" oninput="u()"></div>
         </div>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-g" onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><textarea id="tip-g-t" oninput="u()" style="min-height:38px;">담당 학생들의 방학 전 진로상담을 적극 권유해 주세요.</textarea></div>
+        <div class="fg"><textarea id="tip-g-t" oninput="u()" style="min-height:38px;">내용을 입력하세요</textarea></div>
       </div>
 
       <!-- 성과 탭 -->
       <div id="t-rc" class="tc">
         <div class="fg"><label>섹션 제목</label><input id="s2" value="지난달 프로그램 안내" oninput="u()"></div>
-        <div class="st">통계 카드</div>
         <div id="stats-list"></div>
         <button class="add-btn" onclick="addStat()">+ 통계 항목 추가</button>
-        <div class="st">사진</div>
-        <div id="photos-list"></div>
-        <button class="add-btn" onclick="addPhoto()">+ 사진 추가</button>
-        <div class="st">프로그램</div>
+        <div id="photos-list" style="display:none;"></div>
+        <hr style="border:none;border-top:2px dashed #d4d4e8;margin:16px 0;">
         <div id="progs-list"></div>
         <button class="add-btn" onclick="addProg()">+ 프로그램 추가</button>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-r" onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><textarea id="tip-r-t" oninput="u()" style="min-height:38px;">프로그램 참여 독려 시 학생 포털 공지를 함께 안내해 주세요.</textarea></div>
+        <div class="fg"><textarea id="tip-r-t" oninput="u()" style="min-height:38px;">프로그램 참여 독려 시 학생 포털 공지를 함께 안내해 주세요.</textarea></div>
       </div>
 
       <!-- AI 탭 -->
@@ -487,7 +488,7 @@ return {drawQRToCanvas:drawQRToCanvas};
         <div id="ai-imgs-list"></div>
         <button class="add-btn" onclick="addAiImg()">+ 이미지 추가</button>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-ai" onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><input id="tip-ai-t" value="딥레쥬메(온라인)와 AI 부스(방문 코칭) 두 경로를 학생에게 모두 안내해 주세요." oninput="u()"></div>
+        <div class="fg"><input id="tip-ai-t" value="딥레쥬메(온라인)와 AI 부스(방문 코칭) 두 경로를 학생에게 모두 안내해 주세요." oninput="u()"></div>
       </div>
 
       <!-- 취업수기 탭 -->
@@ -496,7 +497,7 @@ return {drawQRToCanvas:drawQRToCanvas};
         <div id="stories-list"></div>
         <button class="add-btn" onclick="addStory()">+ 취업수기 추가</button>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-s" onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><textarea id="tip-s-t" oninput="u()" style="min-height:38px;">취업수기 기고를 원하는 학생은 센터 이메일로 연락 바랍니다.</textarea></div>
+        <div class="fg"><textarea id="tip-s-t" oninput="u()" style="min-height:38px;">취업수기 기고를 원하는 학생은 센터 이메일로 연락 바랍니다.</textarea></div>
       </div>
 
       <!-- 예고 탭 -->
@@ -505,7 +506,7 @@ return {drawQRToCanvas:drawQRToCanvas};
         <div id="next-list"></div>
         <button class="add-btn" onclick="addNext()">+ 항목 추가</button>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-n" onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><textarea id="tip-n-t" oninput="u()" style="min-height:38px;">다음 달 프로그램 신청 링크를 학과 게시판에 공유해 주세요.</textarea></div>
+        <div class="fg"><textarea id="tip-n-t" oninput="u()" style="min-height:38px;">다음 달 프로그램 신청 링크를 학과 게시판에 공유해 주세요.</textarea></div>
       </div>
 
       <!-- 취업처 탭 -->
@@ -514,7 +515,7 @@ return {drawQRToCanvas:drawQRToCanvas};
         <div id="emp-list"></div>
         <button class="add-btn" onclick="addEmp()">+ 취업처 추가</button>
         <div class="tog-row"><label>교직원 TIP</label><label class="tog"><input type="checkbox" id="tip-e" checked onchange="u()"><span class="tog-s"></span></label></div>
-        <div class="fg"><label>TIP 내용</label><textarea id="tip-e-t" oninput="u()" style="min-height:52px;">센터에서는 상시 채용공고를 접수하고 있으며 학생들이 희망하는 기업에 지원할 수 있도록 돕고 있습니다. 각 전공/부서에서도 이에 관심이 있는 학생이 있다면 센터로 연계 부탁드립니다.</textarea></div>
+        <div class="fg"><textarea id="tip-e-t" oninput="u()" style="min-height:52px;">센터에서는 상시 채용공고를 접수하고 있으며 학생들이 희망하는 기업에 지원할 수 있도록 돕고 있습니다. 각 전공/부서에서도 이에 관심이 있는 학생이 있다면 센터로 연계 부탁드립니다.</textarea></div>
       </div>
 
       <!-- 푸터 탭 -->
@@ -950,9 +951,6 @@ function init(){
   addStat('취업역량강화프로그램 운영','','0','건');
   addStat('프로그램 참여인원','','0','명');
   addStat('현장실습 참여인원(1학기)','','0','명');
-  addPhoto();
-  addPhoto();
-  addPhoto();
   addProg('제목을 입력하세요','내용을 입력하세요',['키워드']);
   addProg('제목을 입력하세요','내용을 입력하세요',['키워드']);
   addProg('제목을 입력하세요','내용을 입력하세요',['키워드']);
@@ -1085,9 +1083,9 @@ function loadFile(inp,store,key,prevId){
 function addStat(t,ic,n,un){
   t=t||''; n=n||'0'; un=un||'건';
   var id=++statCnt; var d=document.createElement('div'); d.className='di'; d.id='si-'+id;
-  d.innerHTML='<div class="di-hdr"><span class="di-lbl">통계 '+id+'</span><button class="di-rm" onclick="removeEl(\'si-'+id+'\');u()">✕</button></div>'
-    +'<div class="r2"><div class="fg"><label>수치</label><input id="si-n-'+id+'" value="'+n+'" oninput="u()"></div><div class="fg"><label>단위</label><input id="si-u-'+id+'" value="'+un+'" oninput="u()"></div></div>'
-    +'<div class="fg"><label>타이틀</label><input id="si-t-'+id+'" value="'+t+'" oninput="u()"></div>';
+  d.innerHTML='<div class="di-hdr"><span class="di-lbl" style="font-size:14px;font-weight:700;color:#2a6040;">프로그램 성과 '+id+'</span><button class="di-rm" onclick="removeEl(\'si-'+id+'\');u()">✕</button></div>'
+    +'<div class="fg" style="margin-bottom:6px;"><input id="si-t-'+id+'" value="'+t+'" placeholder="항목명 (예: 취업역량강화프로그램 운영)" oninput="u()"></div>'
+    +'<div class="r2" style="gap:5px;"><div class="fg" style="margin:0;"><input id="si-n-'+id+'" value="'+n+'" placeholder="수치" oninput="u()" style="text-align:center;"></div><div class="fg" style="margin:0;"><input id="si-u-'+id+'" value="'+un+'" placeholder="건/명" oninput="u()" style="text-align:center;"></div></div>';
   document.getElementById('stats-list').appendChild(d);
 }
 function addPhoto(cap){
@@ -1100,9 +1098,13 @@ function addPhoto(cap){
 }
 function addProg(name,desc,tags){
   name=name||''; desc=desc||''; tags=tags||[];
-  var id=++progCnt; progTags[id]=tags.slice();
+  var id=++progCnt; if(id>photoCnt) photoCnt=id; progTags[id]=tags.slice();
   var d=document.createElement('div'); d.className='di'; d.id='pr-'+id;
-  d.innerHTML='<div class="di-hdr"><span class="di-lbl">프로그램 '+id+'</span><button class="di-rm" onclick="removeEl(\'pr-'+id+'\');delete progTags['+id+'];u()">✕</button></div>'
+  /* 동일 번호 사진 소스 슬롯 미리 확보 */
+  if(!photoSrcs['p'+id]) photoSrcs['p'+id]='';
+  d.innerHTML='<div class="di-hdr"><span class="di-lbl" style="font-size:14px;font-weight:700;color:#3a4a7a;">프로그램 '+id+'</span><button class="di-rm" onclick="removeEl(\'pr-'+id+'\');delete progTags['+id+'];delete photoSrcs[\'p'+id+'\'];u()">✕</button></div>'
+    +'<div class="ph-up" style="margin-bottom:10px;background:#d8e4f4;border:2px solid #8aaad4;border-style:solid;"><input type="file" id="pf-'+id+'" accept="image/*" onchange="loadFile(this,photoSrcs,\'p'+id+'\',\'pp-'+id+'\')" ><img id="pp-'+id+'" class="ppr"><span style="color:#2a4a7a;font-weight:700;font-size:15px;">사진 업로드 (선택)</span></div>'
+    +'<div class="fg" style="margin-bottom:6px;"><input id="pc-'+id+'" placeholder="캡션 (선택)" value="" oninput="u()"></div>'
     +'<div class="fg"><label>제목</label><input id="pr-n-'+id+'" value="'+name+'" oninput="u()"></div>'
     +'<div class="fg"><label>내용</label><textarea id="pr-d-'+id+'" oninput="u()">'+desc+'</textarea></div>'
     +'<div class="fg"><label>해시태그 (Enter, 최대 5개)</label><div class="tw" id="tw-'+id+'" onclick="document.getElementById(\'ti-'+id+'\').focus()">'
@@ -1179,12 +1181,14 @@ function nextDateMode(mode, id){
   var calIn =document.getElementById('nd-cal-'+id);
   var txtIn =document.getElementById('nd-txt-'+id);
   var hidIn =document.getElementById('nd-'+id);
-  /* 라디오 라벨 색상 갱신 */
+  /* 라디오 라벨 배경/색상 갱신 */
   var wrap = calIn ? calIn.closest('.fg') : null;
   if(wrap){
-    wrap.querySelectorAll('label').forEach(function(lb){
+    wrap.querySelectorAll('label[style]').forEach(function(lb){
       var radio=lb.querySelector('input[type=radio]');
-      lb.style.color=(radio&&radio.value===mode)?'#3a3a70':'#9090b0';
+      var sel=(radio&&radio.value===mode);
+      lb.style.background=sel?'#4a82be':'#f4f8fc';
+      lb.style.color=sel?'#fff':'#7090b0';
     });
   }
   if(mode==='cal'){
@@ -1225,9 +1229,9 @@ function addNext(dt,tt,ds,lk,llabel){
   var _dtTxt  = _dtMode==='txt' ? dt : '';
   d.innerHTML='<div class="di-hdr"><span class="di-lbl">프로그램 '+id+'</span><button class="di-rm" onclick="removeEl(\'ni-'+id+'\');delete posterSrcs[\'nx'+id+'\'];u()">✕</button></div>'
     +'<div class="fg"><label>날짜</label>'
-    +'<div style="display:flex;align-items:center;gap:18px;margin-bottom:7px;padding:7px 10px;background:#f4f4fb;border-radius:8px;border:1px solid #d4d4e8;">'
-    +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;color:'+(_dtMode==='cal'?'#3a3a70':'#9090b0')+';"><input type="radio" name="nd-mode-'+id+'" value="cal" '+(_dtMode==='cal'?'checked':'')+' onchange="nextDateMode(&apos;cal&apos;,'+id+')" style="accent-color:#4a82be;width:15px;height:15px;">📅 캘린더 선택</label>'
-    +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;color:'+(_dtMode==='txt'?'#3a3a70':'#9090b0')+';"><input type="radio" name="nd-mode-'+id+'" value="txt" '+(_dtMode==='txt'?'checked':'')+' onchange="nextDateMode(&apos;txt&apos;,'+id+')" style="accent-color:#4a82be;width:15px;height:15px;">✏️ 직접 입력</label>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:6px;border:2px solid #4a82be;overflow:hidden;">'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-size:13px;font-weight:700;padding:10px 6px;background:'+(_dtMode==='cal'?'#4a82be':'#f4f8fc')+';color:'+(_dtMode==='cal'?'#fff':'#7090b0')+';transition:background .15s;border-radius:0;"><input type="radio" name="nd-mode-'+id+'" value="cal" '+(_dtMode==='cal'?'checked':'')+' onchange="nextDateMode(&apos;cal&apos;,'+id+')" style="accent-color:#fff;width:14px;height:14px;"> 캘린더 선택</label>'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-size:13px;font-weight:700;padding:10px 6px;background:'+(_dtMode==='txt'?'#4a82be':'#f4f8fc')+';color:'+(_dtMode==='txt'?'#fff':'#7090b0')+';border-left:2px solid #4a82be;transition:background .15s;border-radius:0;"><input type="radio" name="nd-mode-'+id+'" value="txt" '+(_dtMode==='txt'?'checked':'')+' onchange="nextDateMode(&apos;txt&apos;,'+id+')" style="accent-color:#fff;width:14px;height:14px;"> 직접 입력</label>'
     +'</div>'
     +'<input type="date" id="nd-cal-'+id+'" value="'+_dtCal+'" style="display:'+(_dtMode==='cal'?'block':'none')+';" onchange="nextDateFromCal('+id+');u()">'
     +'<input type="text"  id="nd-txt-'+id+'" value="'+_dtTxt+'" placeholder="상시 / 미정 / 예정 등" style="display:'+(_dtMode==='txt'?'block':'none')+';" oninput="nextDateFromTxt('+id+');u()">'
@@ -1300,9 +1304,9 @@ function addEmp(sc,nm,ds,lk){
     +'<div class="fg"><label>기업명</label><input id="en-'+id+'" value="'+nm+'" oninput="u()"></div>'
     +'<div class="fg"><label>소개</label><textarea id="ed-'+id+'" oninput="u()">'+ds+'</textarea></div>'
     +'<div class="fg"><label>지원 마감일</label>'
-    +'<div style="display:flex;align-items:center;gap:18px;margin-bottom:7px;padding:7px 10px;background:#f4f4fb;border-radius:8px;border:1px solid #d4d4e8;">'
-    +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;color:#3a3a70;"><input type="radio" name="edl-mode-'+id+'" value="cal" checked onchange="empDlMode(&apos;cal&apos;,'+id+')" style="accent-color:#4a82be;width:15px;height:15px;">📅 캘린더 선택</label>'
-    +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600;color:#9090b0;"><input type="radio" name="edl-mode-'+id+'" value="txt" onchange="empDlMode(&apos;txt&apos;,'+id+')" style="accent-color:#4a82be;width:15px;height:15px;">✏️ 직접 입력</label>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:7px;border:2px solid #4a82be;overflow:hidden;">'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-size:13px;font-weight:700;padding:9px 6px;background:#4a82be;color:#fff;transition:background .15s;"><input type="radio" name="edl-mode-'+id+'" value="cal" checked onchange="empDlMode(&apos;cal&apos;,'+id+')" style="accent-color:#fff;width:14px;height:14px;"> 캘린더 선택</label>'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-size:13px;font-weight:700;padding:9px 6px;background:#f4f8fc;color:#7090b0;border-left:2px solid #4a82be;transition:background .15s;"><input type="radio" name="edl-mode-'+id+'" value="txt" onchange="empDlMode(&apos;txt&apos;,'+id+')" style="accent-color:#fff;width:14px;height:14px;"> 직접 입력</label>'
     +'</div>'
     +'<input type="date" id="edl-cal-'+id+'" style="display:block;" onchange="empDlFromCal('+id+');u()">'
     +'<input type="text"  id="edl-txt-'+id+'" placeholder="미정 / 채용시 마감 등" style="display:none;" oninput="empDlFromTxt('+id+');u()">'
@@ -1583,9 +1587,9 @@ function buildNL(){
     statsH='<div style="display:flex;flex-wrap:wrap;gap:0;margin-bottom:0;">';
     statItems.forEach(function(s,idx){
       var isLast=idx===statItems.length-1;
-      statsH+='<div style="flex:1;min-width:80px;padding:10px 10px;text-align:center;'+(isLast?'':'border-right:1px solid #e4dcd4;')+'">'
+      statsH+='<div style="flex:1;min-width:80px;padding:14px 12px;text-align:center;'+(isLast?'':'border-right:1px solid #e4dcd4;')+'">'
         +'<div style="font-family:'+FM+';font-size:clamp(22px,5vw,32px);font-weight:700;color:'+dpColor+';line-height:1.1;">'+s.n+'<span style="font-size:clamp(11px,2.5vw,14px);font-weight:500;color:'+ptColor+';margin-left:2px;">'+s.u+'</span></div>'
-        +'<div style="font-size:clamp(9px,2vw,11px);color:#9a8a78;font-family:'+F+';margin-top:3px;">'+s.t+'</div>'
+        +'<div style="font-size:clamp(11px,2.5vw,13px);color:#9a8a78;font-family:'+F+';margin-top:5px;">'+s.t+'</div>'
         +'</div>';
     });
     statsH+='</div>';
@@ -1632,17 +1636,17 @@ function buildNL(){
     function _tagHash(s){var h=0;for(var j=0;j<s.length;j++)h=(h*31+s.charCodeAt(j))&0xffff;return h;}
     var tagsH=tags.map(function(t){
       var tc=_tagPalette[_tagHash(t)%_tagPalette.length].split('|');
-      return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:20px;background:'+tc[0]+';color:'+tc[1]+';font-weight:500;font-family:'+F+';">'+t+'</span>';
+      return '<span style="display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;background:'+tc[0]+';color:'+tc[1]+';font-weight:600;font-family:'+F+';">'+t+'</span>';
     }).join(' ');
     progItems.push(
-      '<div style="background:#fff;border-radius:10px;border:1px solid #ebe6e0;padding:14px 16px;">'
-      +(tagsH?'<div style="margin-bottom:7px;display:flex;gap:5px;flex-wrap:wrap;">'+tagsH+'</div>':'')
-      +'<div style="font-size:13px;font-weight:600;color:#3a3530;margin-bottom:4px;font-family:'+F+';">'+v('pr-n-'+i)+'</div>'
-      +'<div style="font-size:11px;color:#7a7068;line-height:1.65;font-family:'+F+';">'+v('pr-d-'+i)+'</div></div>'
+      '<div style="background:#fff;border-radius:12px;border:1px solid #ebe6e0;padding:18px 20px;">'
+      +(tagsH?'<div style="margin-bottom:9px;display:flex;gap:5px;flex-wrap:wrap;">'+tagsH+'</div>':'')
+      +'<div style="font-size:16px;font-weight:700;color:#2a2520;margin-bottom:7px;line-height:1.4;font-family:'+F+';">'+v('pr-n-'+i)+'</div>'
+      +'<div style="font-size:13px;color:#6a6058;line-height:1.75;font-family:'+F+';">'+v('pr-d-'+i)+'</div></div>'
     );
   });
-  var pCols=progItems.length<=2?'repeat('+progItems.length+',1fr)':'repeat(auto-fit,minmax(160px,1fr))';
-  var progsH=progItems.length>0?'<div style="display:grid;grid-template-columns:'+pCols+';gap:9px;margin-top:14px;">'+progItems.join('')+'</div>':'';
+  var pCols=progItems.length<=2?'repeat('+progItems.length+',1fr)':'repeat(auto-fit,minmax(220px,1fr))';
+  var progsH=progItems.length>0?'<div style="display:grid;grid-template-columns:'+pCols+';gap:12px;margin-top:16px;">'+progItems.join('')+'</div>':'';
 
   /* AI */
   var drTotal=(parseInt(v('dr-e'))||0)+(parseInt(v('dr-r'))||0)+(parseInt(v('dr-i'))||0);
@@ -1706,9 +1710,9 @@ function buildNL(){
     var wrapS='text-decoration:none;color:inherit;';
     if(ps){
       /* 갤러리 카드 */
-      var inner='<div style="width:100%;aspect-ratio:3/2;overflow:hidden;border-radius:10px 10px 0 0;">'
-        +'<img src="'+ps+'" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""></div>'
-        +'<div style="padding:10px 12px 12px;">'
+      var inner='<div style="width:100%;height:120px;overflow:hidden;border-radius:8px 8px 0 0;image-rendering:auto;">'
+        +'<img src="'+ps+'" style="width:100%;height:100%;object-fit:cover;display:block;image-rendering:-webkit-optimize-contrast;" alt=""></div>'
+        +'<div style="padding:8px 10px 10px;">'
         +'<div style="display:inline-block;background:'+ptColor+'22;color:'+dpColor+';font-size:9px;font-weight:700;border-radius:5px;padding:2px 7px;margin-bottom:6px;font-family:'+F+';">'+v('nd-'+i)+'</div>'
         +'<div style="font-size:13px;font-weight:600;color:#3a3530;margin-bottom:3px;font-family:'+F+';line-height:1.3;">'+v('nt-'+i)+'</div>'
         +'<div style="font-size:11px;color:#9a8a78;line-height:1.55;font-family:'+F+';">'+v('nds-'+i)+'</div>'
@@ -1733,7 +1737,7 @@ function buildNL(){
   });
   var nextH='';
   if(nextGallery.length>0){
-    var nCols=nextGallery.length<=2?'repeat('+Math.max(nextGallery.length,1)+',1fr)':'repeat(auto-fit,minmax(145px,1fr))';
+    var nCols=nextGallery.length<=2?'repeat('+Math.max(nextGallery.length,1)+',1fr)':'repeat(auto-fit,minmax(200px,1fr))';
     nextH+='<div style="display:grid;grid-template-columns:'+nCols+';gap:10px;">'
       +nextGallery.join('')+'</div>';
   }
